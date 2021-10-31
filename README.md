@@ -11,11 +11,11 @@ It was massaged by PDF OCR X Enterprise Edition and a bunch of regexes to produc
 
 - Vision Occupancy Codes.xlsx - Excel file of four-digit code, description, "summary code", and guesses as to type of use. This is exported to Vision Occupancy Codes.csv 
 
-- Land_Use_Codes_from_VGSI.txt - Scraped from vgsi.com page - a two-column tab-delimited file that with four-digit codes plus telegraphic descriptions
+- Land\_Use\_Codes\_from\_VGSI.txt - Scraped from vgsi.com page - a two-column tab-delimited file that with four-digit codes plus telegraphic descriptions
 
 These files are read into tables of a SQLite database for processing. The associated files are:
 
-- Property-in-Lyme.sqlite - the SQLite database that has the tables, one for each of the input files
+- Property-In-Lyme.sqlite - the SQLite database that has the tables, one for each of the input files
 
 - create_database.sh - reliably create the tables & views of the SQLite databse
 
@@ -26,18 +26,21 @@ These files are read into tables of a SQLite database for processing. The associ
 
 Select & Join: https://stackoverflow.com/questions/17434929/joining-two-tables-with-specific-columns
 
-**Find assessments that are different between Town's PDF and scraped values from Vision**
+**Are there assessments that differ between Town's PDF and scraped values from Vision?** _Short answer: Only a couple_
 
+```
 select l.Location, l.Map, l.Lot, l.Unit, l.Parcel_Value as Town_Assessment, r.Assessment as Scraped_Assessment
 from TownAssessment l 
 join ScrapedData r
 on l.Map = r.Map and
 	l.Lot = r.Lot and
 	l.Unit = r.Unit and
-	l.Parcel_Value != r.Appraisal;
+	l.Parcel_Value != r.Assessment;
+```
 
-**Find MBLUs where Street Addresses don't match between Town_Assessment and Scraped_Data**
+**Are there MBLUs where Street Addresses don't match between Town_Assessment and Scraped_Data?** _Short answer: Some, nothing surprising. Mostly extra whitespace_
 
+```
 select l.Map, l.Lot, l.Unit, l.Location as Town_Assessment_Location, r.Street_Address as Scraped_Location
 from TownAssessment l 
 join ScrapedData r
@@ -45,3 +48,23 @@ on l.Map = r.Map and
 	l.Lot = r.Lot and
 	l.Unit = r.Unit and
 	trim(l.Location) != trim(r.Street_Address);
+```
+
+**What are all the Land Use Codes used in Lyme?**
+
+```
+SELECT count(Description), Description
+FROM ScrapedData
+GROUP BY DESCRIPTION
+ORDER by count(*) DESC;
+```
+**Do the Vision Occupancy codes match Lyme's VGSI codes?** _The answer: Mostly..._
+
+```
+SELECT l.Code, r.Code, l.Description as VGSIinLyme, r.Description as VisionOcc
+FROM VGSIinLyme l
+JOIN VISIONOccCodes r
+ON l.Code = r.Code and
+	l.Description != r.Description;
+```
+

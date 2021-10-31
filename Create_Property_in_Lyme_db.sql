@@ -44,7 +44,7 @@ CREATE TABLE "TownAssessment"
 "Empty" TEXT
 );
 
-CREATE TABLE "VGSICodes"
+CREATE TABLE "VGSIinLyme"
 (
 "Code" TEXT,
 "Description" TEXT
@@ -59,50 +59,3 @@ CREATE TABLE "VISIONOccCodes"
 "Type" TEXT
 );
 
-# select * from reservedOn r left join stayedOn s on r.resnum=s.resnum;
-
--- CREATE VIEW "summaryByCabin" as 
--- 	select 
--- 		resnum as ResNum, 
--- 		min(staydate) as StartDate, 
--- 		count(*) as Nights, 
--- 		max(staydate) as EndDate,
--- 		room as Cabin, 
--- 		stayguest as Guest, 
--- 		printf('$%.2f',sum(amount)) as Total
--- 	from 
--- 		reservations 
--- 	where 
--- 		staydate >= (select startDate from dates)
--- 		and 
--- 		staydate <= (select endDate from dates)
--- 	group by 
--- 		resnum, Room
--- 	order by
--- 		min(staydate)
--- 	;
-
--- CREATE VIEW "summaryByGuest" as
--- 	select 
--- 		resnum as ResNum, 
--- 		min(staydate) as StartDate, 
--- 		count(*) as Nights, 
--- 		max(staydate) as EndDate,
--- 		CASE
--- 			when count(distinct room) <= 5 then group_concat(DISTINCT room) 
--- 			else "Many"
--- 		end as 'Cabin(s)',
--- 		count(DISTINCT room) as '#Cabins',
--- 		stayguest as Guest, 
--- 		printf("$%.2f",sum(amount)) as Total
--- 	from 
--- 		reservations 
--- 	where 
--- 		staydate >= (select startDate from dates)
--- 		and 
--- 		staydate <= (select endDate from dates)	
--- 	group by 
--- 		stayguest
--- 	order by
--- 		min(staydate)
--- 	;
