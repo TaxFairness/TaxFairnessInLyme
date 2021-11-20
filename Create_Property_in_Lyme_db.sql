@@ -3,110 +3,147 @@
 #INSERT INTO  "dates" (startDate,endDate) VALUES ('2014-01-01','2014-12-31');
 
 CREATE TABLE "ScrapedData" (
-"PID" TEXT,
-"Street_Address" TEXT,
-"MBLU" TEXT,
-"Map" TEXT,
-"Lot" TEXT,
-"Unit" TEXT,
-"Book_Page" TEXT,
-"Assessment" INTEGER,
-"Appraisal" INTEGER,
-"Lot_Size" INTEGER,
-"Land_Use_Code" TEXT,
-"Description" TEXT,
-"Zoning_District" TEXT,
-"Num_Buildings" INTEGER,
-"Appr_Year" TEXT,
-"Improvements" INTEGER,
-"Land_Value" INTEGER,
-"Parcel_Value" INTEGER,
-"Recent_Sale_Price" INTEGER,
-"Recent_Sale_Date" TEXT,
-"Prev_Sale_Price" INTEGER,
-"Prev_Sale_Date" TEXT,
-"Prev_Assess" INTEGER,
-"Prev_Apprais" INTEGER,
-"Empty1" TEXT,
-"Empty2" TEXT
+"SD_PID" TEXT,
+"SD_Street_Address" TEXT,
+"SD_MBLU" TEXT,
+"SD_Map" TEXT,
+"SD_Lot" TEXT,
+"SD_Unit" TEXT,
+"SD_Book_Page" TEXT,
+"SD_Assessment2021" INTEGER,
+"SD_Appraisal2021" INTEGER,
+"SD_Lot_Size" INTEGER,
+"SD_Land_Use_Code" TEXT,
+"SD_Description" TEXT,
+"SD_Zoning_District" TEXT,
+"SD_Num_Buildings" INTEGER,
+"SD_Appr_Year" TEXT,
+"SD_Improvements2021" INTEGER,
+"SD_Land_Value2021" INTEGER,
+"SD_Parcel_Value2021" INTEGER,
+"SD_Recent_Sale_Price" INTEGER,
+"SD_Recent_Sale_Date" TEXT,
+"SD_Prev_Sale_Price" INTEGER,
+"SD_Prev_Sale_Date" TEXT,
+"SD_Prev_Assess2020" INTEGER,
+"SD_Prev_Apprais2020" INTEGER,
+"SD_Empty1" TEXT,
+"SD_Empty2" TEXT
 );
 
 CREATE TABLE "TownAssessment"
 (
-"Owner Name" TEXT,
-"Map" TEXT,
-"Lot" TEXT,
-"Unit" TEXT,
-"Location" TEXT,
-"Land_Value" INTEGER,
-"Improvements" INTEGER,
-"Parcel_Value" INTEGER,
-"Empty" TEXT
+"TA_Owner Name" TEXT,
+"TA_Map" TEXT,
+"TA_Lot" TEXT,
+"TA_Unit" TEXT,
+"TA_Location" TEXT,
+"TA_Land_Value" INTEGER,
+"TA_Improvements" INTEGER,
+"TA_Parcel_Value" INTEGER,
+"TA_Empty" TEXT
 );
 
 CREATE TABLE "RecentSales" 
 (
-"PID" TEXT,
-"Prev_Owner" TEXT,
-"Owner" TEXT, 
-"Address" TEXT,
-"MBLU" TEXT,
-"Map" TEXT,
-"Lot" TEXT,
-"Unit" TEXT,
-"Book-Page" TEXT,
-"RecentSalePrice" INTEGER,
-"RecentSaleDate" TEXT,
-"TransferTax" INTEGER,
-"BackCalc" TEXT
+"RS_PID" TEXT,
+"RS_Prev_Owner" TEXT,
+"RS_Owner" TEXT, 
+"RS_Address" TEXT,
+"RS_MBLU" TEXT,
+"RS_Map" TEXT,
+"RS_Lot" TEXT,
+"RS_Unit" TEXT,
+"RS_Book-Page" TEXT,
+"RS_RecentSalePrice" INTEGER,
+"RS_RecentSaleDate" TEXT,
+"RS_TransferTax" INTEGER,
+"RS_BackCalc" TEXT
 );
 
 CREATE TABLE "VGSIinLyme"
 (
-"Code" TEXT,
-"Description" TEXT
+"VL_Code" TEXT,
+"VL_Description" TEXT
 );
 
 CREATE TABLE "VISIONOccCodes"
 (
-"Code" TEXT,
-"Description" TEXT,
-"SummaryCode" TEXT,
-"empty" TEXT,
-"Type" TEXT
+"VC_Code" TEXT,
+"VC_Description" TEXT,
+"VC_SummaryCode" TEXT,
+"VC_empty" TEXT,
+"VC_Type" TEXT
 );
 
 CREATE TABLE "ZoningPermits"
 (
-"PermitNumber" TEXT,
-"DateApplication" TEXT,
-"DateIssued" TEXT,
-"Bogus1" TEXT,
-"Map" TEXT,
-"Map-Lot" TEXT,
-"Lot" TEXT,
-"Unit" TEXT,
-"Address" TEXT,
-"Applicant" TEXT,
-"Description" TEXT,
-"EstCost" INTEGER,
-"Bogus2" TEXT,
-"NewHousing" TEXT
+"ZP_PermitNumber" TEXT,
+"ZP_DateApplication" TEXT,
+"ZP_DateIssued" TEXT,
+"ZP_Bogus1" TEXT,
+"ZP_Map" TEXT,
+"ZP_Map-Lot" TEXT,
+"ZP_Lot" TEXT,
+"ZP_Unit" TEXT,
+"ZP_Address" TEXT,
+"ZP_Applicant" TEXT,
+"ZP_Description" TEXT,
+"ZP_EstCost" INTEGER,
+"ZP_Bogus2" TEXT,
+"ZP_NewHousing" TEXT
 );
 
 CREATE TABLE "OldVsNew"
 (
-"Page" TEXT,
-"Row" TEXT,
-"AcctNumber" TEXT,
-"Map" TEXT,
-"Lot" TEXT,
-"Unit" TEXT,
-"Location" TEXT,
-"Owner" TEXT,
-"UseCode" TEXT,
-"OldValue" INTEGER,
-"NewValue" INTEGER,
-"Ratio" REAL,
-"Difference" INTEGER
+"ON_Page" TEXT,
+"ON_Row" TEXT,
+"ON_AcctNumber" TEXT,
+"ON_Map" TEXT,
+"ON_Lot" TEXT,
+"ON_Unit" TEXT,
+"ON_Location" TEXT,
+"ON_Owner" TEXT,
+"ON_UseCode" TEXT,
+"ON_OldValue" INTEGER,
+"ON_NewValue" INTEGER,
+"ON_Ratio" REAL,
+"ON_Difference" INTEGER
 );
+
+CREATE TABLE "LymeUseCodes"
+(
+"LC_Row" INTEGER,
+"LC_UseCode" TEXT,
+"LC_UseDescription" TEXT,
+"LC_LandClass" TEXT,
+"LC_LndLn1" TEXT,
+"LC_LndLn2" TEXT,
+"LC_Bldgs" TEXT,
+"LC_Obldgs" TEXT
+);
+
+CREATE VIEW "Assess_Apprais_Sales" as 
+select 
+	SD_map as "Map", 
+	SD_lot as "Lot", 
+	SD_unit as "Unit", 
+	SD_Street_Address as "Street Address",
+	LC_LandClass as "Type",
+	printf("$%,d",SD_Assessment2021) as "Assess. 2021",
+	printf("$%,d",SD_Appraisal2021) as "Apprais. 2021",
+	printf("$%,d",SD_Improvements2021) as "Improv. 2021",
+	printf("$%,d",SD_Land_Value2021) as "Land Value 2021",
+	printf("$%,d",SD_Parcel_Value2021) as "Total Value 2021",
+	printf("$%,d",SD_Prev_Assess2020) as "Assess. 2020",
+	printf("$%,d",SD_Prev_Apprais2020) as "Apprais. 2020",
+	printf("$%,d",SD_Recent_Sale_Price) as "Recent Sale",
+	SD_Recent_Sale_Date as "Recent Date",
+	printf("$%,d",SD_Prev_Sale_Price) as "Previous Sale",
+	SD_Prev_Sale_Date as "Previous Date"
+from ScrapedData, LymeUseCodes
+on
+	SD_Land_Use_Code != ""
+	AND  
+	SD_Land_Use_Code = LC_UseCode
+;

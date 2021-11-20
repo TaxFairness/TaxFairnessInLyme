@@ -50,73 +50,107 @@ Paste the statements below into the "Exectute SQL" tab and click the
 **Are there assessments that differ between Town's PDF and scraped values from Vision?** _Short answer: Only a couple_
 
 ```sql
-select l.Location, l.Map, l.Lot, l.Unit, l.Parcel_Value as Town_Assessment, r.Assessment as Scraped_Assessment
-from TownAssessment l 
-join ScrapedData r
-on l.Map = r.Map and
-	l.Lot = r.Lot and
-	l.Unit = r.Unit and
-	l.Parcel_Value != r.Assessment;
+select 
+	TA_Location, 
+	TA_Map, 
+	TA_Lot, 
+	TA_Unit, 
+	TA_Parcel_Value as Town_Assessment, 
+	SD_Assessment2021 as Scraped_Assessment
+from TownAssessment , ScrapedData 
+on TA_Map = SD_Map and
+	TA_Lot = SD_Lot and
+	TA_Unit = SD_Unit and
+	TA_Parcel_Value != SD_Assessment2021
+;
 ```
 
 **Are there MBLUs where Street Addresses don't match between Town_Assessment and Scraped_Data?** _Short answer: Some, nothing surprising. Mostly extra whitespace_
 
 ```sql
-select l.Map, l.Lot, l.Unit, l.Location as Town_Assessment_Location, r.Street_Address as Scraped_Location
+select 
+	TA_Map, 
+	TA_Lot, 
+	TA_Unit, 
+	TA_Location as TA_Location, 
+	SD_Street_Address as Scraped_Location
 from TownAssessment l 
 join ScrapedData r
-on l.Map = r.Map and
-	l.Lot = r.Lot and
-	l.Unit = r.Unit and
-	trim(l.Location) != trim(r.Street_Address);
+on TA_Map = r.SD_Map and
+	TA_Lot = r.SD_Lot and
+	TA_Unit = r.SD_Unit and
+	trim(l.TA_Location) != trim(r.SD_Street_Address) AND
+	SD_Street_Address not like "Problem%"
+;
 ```
 
 **What are the most common Land Use Codes used in Lyme?**
 
 ```sql
-SELECT count(Description), Description
+SELECT 
+	count(SD_Description), 
+	SD_Description
 FROM ScrapedData
-GROUP BY DESCRIPTION
-ORDER by count(*) DESC;
+GROUP BY SD_Description
+ORDER by count(*) DESC
+;
 ```
-**Do the Vision Occupancy codes match Lyme's VGSI codes?** _The answer: Mostly..._
+**Compare UseCodes between VGSIinLyme, VisionOcc, and LymeUseCodes** _The answer: Substantial agreement, especially since the latter was truncated in the printout..._
 
 ```sql
-SELECT l.Code, r.Code, l.Description as VGSIinLyme, r.Description as VisionOcc
-FROM VGSIinLyme l
-JOIN VISIONOccCodes r
-ON l.Code = r.Code and
-	l.Description != r.Description;
+SELECT 
+	l.VL_Code, 
+	r.VC_Code, 
+	LC_UseCode,
+	l.VL_Description as VGSIinLyme, 
+	r.VC_Description as VisionOcc,
+	LC_UseDescription as LymeUseCodes
+FROM VGSIinLyme l, VISIONOccCodes r, LymeUseCodes c
+ON l.VL_Code = r.VC_Code and
+	VL_Code = LC_UseCode and
+	(l.VL_Description != r.VC_Description OR
+	 r.VC_Description != LC_UseDescription)
+;
 ```
 
 **Do MBLU's (and street addresses) from RecentSales match those from ScrapedData?** _The answer: Yes - differences are upper/lower case..._
 
 ```sql
-SELECT l.Map, l.Lot, l.Unit, l.Address, r.Street_Address, l.RecentSaleDate
-from RecentSales l 
-join ScrapedData r
-on l.Map = r.Map and
-	l.Lot = r.Lot and
-	l.Unit = r.Unit and
-	trim(l.Address) != trim(r.Street_Address) and
-	trim(l.Address) != "";
+SELECT 
+	l.RS_Map, 
+	l.RS_Lot, 
+	l.RS_Unit, 
+	l.RS_Address, 
+	r.SD_Street_Address,
+	l.RS_RecentSaleDate
+from RecentSales l, ScrapedData r
+on l.RS_Map = r.SD_Map and
+	l.RS_Lot = r.SD_Lot and
+	l.RS_Unit = r.SD_Unit and
+	trim(l.RS_Address) != trim(r.SD_Street_Address) and
+	trim(l.RS_Address) != ""
 ;
 ```
 
 **Does RecentSales price differ much from Assessed value from ScrapedData?** _The answer: This query looks at 2020 dates to April 2021. A few wildly out of bounds_
 
 ```sql
-SELECT l.Map, l.Lot, l.Unit, l.Address, l.RecentSaleDate,
-	printf("%,d",l.RecentSalePrice) as RecentSalePrice, 
-	printf("%,d",r.Assessment) as Assessment, 
-	printf("%.0f",cast (100+100*(r.Assessment-l.RecentSalePrice)/l.RecentSalePrice as real)) as "Percent"
+SELECT 
+	l.RS_Map as "Map", 
+	l.RS_Lot as "Lot", 
+	l.RS_Unit as "Unit", 
+	l.RS_Address as "Address", 
+	l.RS_RecentSaleDate as "Date",
+	printf("$%,d",l.RS_RecentSalePrice) as RecentSalePrice, 
+	printf("$%,d",r.SD_Assessment2021) as Assessment, 
+	printf("%.0f",cast (100+100*(r.SD_Assessment2021-l.RS_RecentSalePrice)/l.RS_RecentSalePrice as real)) as "Percent"
 from RecentSales l 
 join ScrapedData r
-on l.Map = r.Map and
-	l.Lot = r.Lot and
-	l.Unit = r.Unit
-WHERE l.Map != "" AND
-	l.RecentSaleDate < "2021-04-01"
+on l.RS_Map = r.SD_Map and
+	l.RS_Lot = r.SD_Lot and
+	l.RS_Unit = r.SD_Unit
+WHERE l.RS_Map != "" AND
+	l.RS_RecentSaleDate < "2021-04-01"
 ORDER BY cast(Percent as integer)
 ;
 ```
@@ -126,33 +160,35 @@ _Change the query above to use `l.RecentSaleDate >= "2021-04-01"` to get recent 
 **Do Street Addresses from OldVsNew match those from ScrapedData?** _The answer: Yes - differences are upper/lower case..._
 
 ```sql
-SELECT r.Page, r.Row, l.Map, l.Lot, l.Unit, l.Street_Address, r.Location
+SELECT 
+	r.ON_Page as "Page", 
+	r.ON_Row as "Row", 
+	"" as "",
+	l.SD_Map as "Map", 
+	l.SD_Lot as "Lot", 
+	l.SD_Unit as "Unit", 
+	l.SD_Street_Address as "Scraped Address", 
+	r.ON_Location as "Old/New Address"
 from ScrapedData l 
 join OldVsNew r
-on l.Map = r.Map and
-	l.Lot = r.Lot and
-	l.Unit = r.Unit and
-	instr(l.Street_Address,r.Location) = 1;
+on l.SD_Map = r.ON_Map and
+	l.SD_Lot = r.ON_Lot and
+	l.SD_Unit = r.ON_Unit and
+	instr(l.SD_Street_Address,r.ON_Location) = 1;
 ;
 ```
 
 **Do MBLU's from OldVsNew match those from ScrapedData?** _The answer: Yes - differences are upper/lower case..._
 
 ```sql
-SELECT r.Page, r.Row, l.Map, l.Lot, l.Unit, l.Street_Address, r.Location
-from ScrapedData l 
-WHERE NOT EXISTS (SELECT 1 FROM OldVsNew r
-	WHERE l.MAP = r.MAP and l.LOT = r.Lot)
-
-;
-```
+FAULTY SQL```
 
 **Look for duplicate entries in the UseCode column** _No interesting duplicates. Huzzah!_
 
 ```sql
-select UseCode, count(*) c 
+select LC_UseCode, count(*) c 
 from LymeUseCodes
-group by UseCode having c>1
+group by LC_UseCode having c>1
 ;
 ```
 
@@ -160,15 +196,15 @@ group by UseCode having c>1
 
 ```sql
 select 
-	Street_Address, 
-	Assessment, 
-	Appraisal, 
-	printf("%d",Appraisal-Assessment) as "X",
-	printf("%.0f",cast (100*(Appraisal-Assessment)/Appraisal as real)) as Ratio,
-	printf("%0.f", cast (0.02407*(Appraisal-Assessment) as real)) as "Tax Savings"
+	SD_Street_Address as "Address", 
+	printf("$%,d",SD_Assessment2021) as "2021 Assess.", 
+	printf("$%,d",SD_Appraisal2021) as "2021 Apprais.", 
+	printf("$%,d",SD_Appraisal2021-SD_Assessment2021) as "Difference",
+	printf("%.0f",cast (100*(SD_Appraisal2021-SD_Assessment2021)/SD_Appraisal2021 as real)) as Ratio,
+	printf("$%,d", cast (0.02407*(SD_Appraisal2021-SD_Assessment2021) as integer)) as "Tax Savings"
 from ScrapedData
 where 
-	Assessment < Appraisal*0.5 
-order by cast("Tax Savings" as integer) DESC
+	SD_Assessment2021 < SD_Appraisal2021*0.5 
+order by cast(Ratio as integer) DESC
 ;
 ```
