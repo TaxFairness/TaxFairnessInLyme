@@ -17,6 +17,8 @@ It was massaged by PDF OCR X Enterprise Edition and a bunch of regexes to produc
 
 - **Old-NewValues2021.xlsx** Lyme gave a printout of old and new valuations to John Biglow who scanned it to produce Old-NewValues.pdf. Rich used [https://onlineocr.net](https://onlineocr.net) to convert it to a text file that could be imported into a spreadsheet. Table is named **OldVsNew**
 
+- **002_Lyme Land Use Codes-17Nov2021.xlsx** Received a scanned PDF of Land use codes from assessing@lymenh.gov. This is an OCR'd version. Table is named **LymeUseCodes**
+
 ## Why use a database?
 
 The files here all get loaded into a SQLite database. (Don't worry - it's not scary.) Doing this has two major advantages:
@@ -120,3 +122,53 @@ ORDER BY cast(Percent as integer)
 ```
 
 _Change the query above to use `l.RecentSaleDate >= "2021-04-01"` to get recent sales_
+
+**Do Street Addresses from OldVsNew match those from ScrapedData?** _The answer: Yes - differences are upper/lower case..._
+
+```sql
+SELECT r.Page, r.Row, l.Map, l.Lot, l.Unit, l.Street_Address, r.Location
+from ScrapedData l 
+join OldVsNew r
+on l.Map = r.Map and
+	l.Lot = r.Lot and
+	l.Unit = r.Unit and
+	instr(l.Street_Address,r.Location) = 1;
+;
+```
+
+**Do MBLU's from OldVsNew match those from ScrapedData?** _The answer: Yes - differences are upper/lower case..._
+
+```sql
+SELECT r.Page, r.Row, l.Map, l.Lot, l.Unit, l.Street_Address, r.Location
+from ScrapedData l 
+WHERE NOT EXISTS (SELECT 1 FROM OldVsNew r
+	WHERE l.MAP = r.MAP and l.LOT = r.Lot)
+
+;
+```
+
+**Look for duplicate entries in the UseCode column** _No interesting duplicates. Huzzah!_
+
+```sql
+select UseCode, count(*) c 
+from LymeUseCodes
+group by UseCode having c>1
+;
+```
+
+**Select properties where Assessment < 50% of Appraisal** _No conclusions_
+
+```sql
+select 
+	Street_Address, 
+	Assessment, 
+	Appraisal, 
+	printf("%d",Appraisal-Assessment) as "X",
+	printf("%.0f",cast (100*(Appraisal-Assessment)/Appraisal as real)) as Ratio,
+	printf("%0.f", cast (0.02407*(Appraisal-Assessment) as real)) as "Tax Savings"
+from ScrapedData
+where 
+	Assessment < Appraisal*0.5 
+order by cast("Tax Savings" as integer) DESC
+;
+```
