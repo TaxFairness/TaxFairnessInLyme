@@ -39,7 +39,7 @@ I recommend [DB Browser for SQLite](https://sqlitebrowser.org/) as a database ma
 
 - **Property-In-Lyme.sqlite** is the SQLite database. It has separate _tables_ for each of the five spreadsheets listed above. It gets created by the `create_database.sh` script below. It is usually pre-loaded with the latest data.
 
-- **create\_database.sh** - a script to reliably create the tables & views of the SQLite databse
+- **create\_database.sh** - a script to reliably create the tables & views of the SQLite database. Run this script to do all the work.
 
 - **import\_into\_database.sh** - a script to import the various files into tables of the SQLite database
 
@@ -192,7 +192,7 @@ group by LC_UseCode having c>1
 ;
 ```
 
-**Select properties where Assessment < 50% of Appraisal** _No conclusions_
+**Select properties where Assessment < 50% of Appraisal** _173 properties, about $1.1M in tax savings_
 
 ```sql
 select 
@@ -206,5 +206,48 @@ from ScrapedData
 where 
 	SD_Assessment2021 < SD_Appraisal2021*0.5 
 order by cast(Ratio as integer) DESC
+;
+```
+
+**Select Unique Rows between tables** _Performs a UNION, removing duplicates - 1068 rows; UNION ALL keeps duplicates. Ref: [https://www.sqlshack.com/compare-tables-sql-server/](https://www.sqlshack.com/compare-tables-sql-server/)_
+
+```sql
+select ON_Map, ON_Lot, ON_Unit from OldVsNew
+UNION 
+select SD_Map, SD_Lot, SD_Unit from ScrapedData
+;
+```
+
+**Select Rows contained in both tables** _1045 rows_
+
+```sql
+select ON_Map, ON_Lot, ON_Unit from OldVsNew
+INTERSECT 
+select SD_Map, SD_Lot, SD_Unit from ScrapedData
+;
+```
+
+**Select Rows in OldVsNew that aren't in ScrapedData** _20 rows_
+
+This is now a VIEW in the database.
+Each time either table is updated with an import, the contents
+of this view should be explicable.
+
+```sql
+select ON_Map, ON_Lot, ON_Unit from OldVsNew
+EXCEPT 
+select SD_Map, SD_Lot, SD_Unit from ScrapedData
+;
+```
+**And the reverse: Rows in ScrapedData that aren't in OldVsNew** 
+
+This is now a VIEW in the database.
+Each time either table is updated with an import, the contents
+of this view should be explicable.
+
+```sql
+select SD_Map, SD_Lot, SD_Unit from ScrapedData
+EXCEPT 
+select ON_Map, ON_Lot, ON_Unit from OldVsNew
 ;
 ```

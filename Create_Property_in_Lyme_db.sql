@@ -147,3 +147,15 @@ on
 	AND  
 	SD_Land_Use_Code = LC_UseCode
 ;
+
+CREATE VIEW "Sanity_ScrapedNotInOldNew" as 
+select ON_Map, ON_Lot, ON_Unit from OldVsNew
+EXCEPT 
+select SD_Map, SD_Lot, SD_Unit from ScrapedData
+;
+
+CREATE VIEW "Sanity_OldNewNotInScraped" as 
+select SD_Map, SD_Lot, SD_Unit from ScrapedData
+EXCEPT 
+select ON_Map, ON_Lot, ON_Unit from OldVsNew
+;
