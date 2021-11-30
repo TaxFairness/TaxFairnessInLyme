@@ -19,6 +19,8 @@ It was massaged by PDF OCR X Enterprise Edition and a bunch of regexes to produc
 
 - **002_Lyme Land Use Codes-17Nov2021.xlsx** Received a scanned PDF of Land use codes from assessing@lymenh.gov. This is an OCR'd version. Table is named **LymeUseCodes**
 
+- **Assess\_Apprais\_Sales.xlsx** Combination of ScrapedData, the OldVsNew PDF file, and RecentSales tables, adding in the LandClass. Table is named **Assess\_Apprais\_Sales**
+
 ## Why use a database?
 
 The files here all get loaded into a SQLite database. (Don't worry - it's not scary.) Doing this has two major advantages:

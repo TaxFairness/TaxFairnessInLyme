@@ -129,7 +129,8 @@ select
 	SD_lot as "Lot", 
 	SD_unit as "Unit", 
 	SD_Street_Address as "Street Address",
-	LC_LandClass as "Type",
+	SD_Lot_Size as "Acres",
+	LC_LandClass as "Class",
 	printf("$%,d",SD_Assessment2021) as "Assess. 2021",
 	printf("$%,d",SD_Appraisal2021) as "Apprais. 2021",
 	printf("$%,d",SD_Improvements2021) as "Improv. 2021",
@@ -140,12 +141,21 @@ select
 	printf("$%,d",SD_Recent_Sale_Price) as "Recent Sale",
 	SD_Recent_Sale_Date as "Recent Date",
 	printf("$%,d",SD_Prev_Sale_Price) as "Previous Sale",
-	SD_Prev_Sale_Date as "Previous Date"
-from ScrapedData, LymeUseCodes
-on
+	SD_Prev_Sale_Date as "Previous Date",
+	printf("$%,d",RS_RecentSalePrice) as "Grafton Sale",
+	RS_RecentSaleDate as "Grafton Date"
+
+FROM ScrapedData
+LEFT JOIN RecentSales on
+	SD_Map = RS_Map
+	AND SD_Lot = RS_Lot
+	and SD_Unit = RS_Unit
+LEFT JOIN LymeUseCodes
+ON 
 	SD_Land_Use_Code != ""
 	AND  
 	SD_Land_Use_Code = LC_UseCode
+	
 ;
 
 CREATE VIEW "Sanity_ScrapedNotInOldNew" as 
