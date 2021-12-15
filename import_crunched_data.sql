@@ -8,6 +8,8 @@ delete from RecentSales;
 delete from ZoningPermits;
 delete from OldVsNew;
 delete from LymeUseCodes;
+delete from LymeOldToNew211202;
+delete from ConservationEasements;
 
 .mode csv
 .import ScrapedData-21Nov2021.csv ScrapedData
@@ -17,6 +19,9 @@ delete from LymeUseCodes;
 .import "Lyme Zoning Permit 2016-2021.csv" ZoningPermits
 .import "Old-New Values/Old-NewValues2021-21Nov2021.csv" OldVsNew
 .import "002_Lyme Land Use Codes-17Nov2021.csv" LymeUseCodes
+.import "Todd Data-3Dec2021/lyme old to new 21-1202-from-xls-cleaned.csv" LymeOldToNew211202
+.import "Todd Data-3Dec2021/ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv" AsVsAPDina
+.import "Conservation Easements/Lyme Conservation Easements as of 2-13-08.csv" ConservationEasements
 
 delete from VGSIinLyme;
 .mode tabs
