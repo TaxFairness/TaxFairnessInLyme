@@ -19,7 +19,13 @@ It was massaged by PDF OCR X Enterprise Edition and a bunch of regexes to produc
 
 - **002_Lyme Land Use Codes-17Nov2021.xlsx** Received a scanned PDF of Land use codes from assessing@lymenh.gov. This is an OCR'd version. Table is named **LymeUseCodes**
 
-- **Assess\_Apprais\_Sales.xlsx** Combination of ScrapedData, the OldVsNew PDF file, and RecentSales tables, adding in the LandClass. Table is named **Assess\_Apprais\_Sales**
+- **Assess\_Apprais\_Sales.xlsx** A view that's a combination of ScrapedData, the OldVsNew PDF file, and RecentSales tables, adding in the LandClass. Updated to include 2Dec2021 values for Appraised values. View is named **Assess\_Apprais\_Sales**
+
+- **ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv** Data from Todd via Dina that gives current (as of 2Dec2021) values for appraised & assessed values. Table is named **AsVsAPDina**
+
+- **UniqueAsVsAPDina** A view that filters out duplicate rows of the AsVsAPDina table.
+
+- **ConservationEasements** Imported data from B. Allison's table of easements up to 2008.
 
 ## Why use a database?
 
@@ -97,6 +103,7 @@ GROUP BY SD_Description
 ORDER by count(*) DESC
 ;
 ```
+
 **Compare UseCodes between VGSIinLyme, VisionOcc, and LymeUseCodes** _The answer: Substantial agreement, especially since the latter was truncated in the printout..._
 
 ```sql
@@ -183,7 +190,8 @@ on l.SD_Map = r.ON_Map and
 **Do MBLU's from OldVsNew match those from ScrapedData?** _The answer: Yes - differences are upper/lower case..._
 
 ```sql
-FAULTY SQL```
+FAULTY SQL
+```
 
 **Look for duplicate entries in the UseCode column** _No interesting duplicates. Huzzah!_
 
@@ -194,7 +202,8 @@ group by LC_UseCode having c>1
 ;
 ```
 
-**Select properties where Assessment < 50% of Appraisal** _173 properties, about $1.1M in tax savings_
+**Select properties where Assessment < 50% of Appraisal** *173 properties, about
+\$1.1M in tax savings*
 
 ```sql
 select 
@@ -251,5 +260,50 @@ of this view should be explicable.
 select SD_Map, SD_Lot, SD_Unit from ScrapedData
 EXCEPT 
 select ON_Map, ON_Lot, ON_Unit from OldVsNew
+;
+```
+
+**Do the Old & New Assessments match between scanned PDF and Assessor's Excel spreadsheet?** _The answer: Yes - only #6 On The Common #1. differs, but it's a difference in the location (same values)_
+
+```sql
+SELECT 
+	l.ON_Map, 
+	l.ON_Lot, 
+	l.ON_Unit, 
+	l.ON_Location,
+	l.ON_OldValue,
+	l.ON_NewValue,
+	r.LO_OldValue,
+	r.LO_NewValue
+from OldVsNew l, LymeOldToNew211202 r
+on l.ON_Map = r.LO_Map and
+	l.ON_Lot = r.LO_Lot and
+	l.ON_Unit = r.LO_Unit and
+	(LO_OldValue != ON_OldValue AND LO_NewValue != ON_NewValue)
+;
+```
+
+**Which recently-improved properties have increased their assessments?** 
+
+```sql
+SELECT 
+	l.ZP_Map, 
+	l.ZP_Lot, 
+	l.ZP_Unit, 
+	l.ZP_Address, 
+	l.ZP_DateIssued as "Date",
+	l.ZP_Description,
+	l.ZP_EstCost as "Est. Cost",
+	r.SD_Prev_Assess2020,
+	(r.SD_Prev_Assess2020+l.ZP_EstCost) as "Computed Assess.",
+	r.SD_Assessment2021,
+	(r.SD_Assessment2021-(r.SD_Prev_Assess2020+l.ZP_EstCost)) as "Delta"
+from ZoningPermits l
+LEFT JOIN ScrapedData r
+on l.ZP_Map = r.SD_Map and
+	l.ZP_Lot = r.SD_Lot and
+	l.ZP_Unit = r.SD_Unit
+WHERE l.ZP_DateIssued > "2021-01-01"
+ORDER by ZP_DateIssued
 ;
 ```
