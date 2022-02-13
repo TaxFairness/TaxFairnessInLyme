@@ -6,8 +6,8 @@ CREATE TABLE "ScrapedData" (
 "SD_PID" TEXT,
 "SD_Street_Address" TEXT,
 "SD_MBLU" TEXT,
-"SD_Map" TEXT,
-"SD_Lot" TEXT,
+"SD_Map" INTEGER,
+"SD_Lot" INTEGER,
 "SD_Unit" TEXT,
 "SD_Book_Page" TEXT,
 "SD_Assessment2021" INTEGER,
@@ -31,11 +31,45 @@ CREATE TABLE "ScrapedData" (
 "SD_Empty2" TEXT
 );
 
+CREATE TABLE "ScrapedData2" (
+"SD_PID" TEXT,
+"SD_Street_Address" TEXT,
+"SD_MBLU" TEXT,
+"SD_Map" INTEGER,
+"SD_Lot" INTEGER,
+"SD_Unit" TEXT,
+"SD_Book_Page" TEXT,
+"SD_Assessment2021" INTEGER,
+"SD_Appraisal2021" INTEGER,
+"SD_Lot_Size" INTEGER,
+"SD_Land_Use_Code" TEXT,
+"SD_Description" TEXT,
+"SD_Zoning_District" TEXT,
+"SD_Num_Buildings" INTEGER,
+"SD_Appr_Year" TEXT,
+"SD_App_Imp2021" INTEGER,
+"SD_App_Land2021" INTEGER,
+"SD_App_Tot2021" INTEGER,
+"SD_Recent_Sale_Price" INTEGER,
+"SD_Recent_Sale_Date" TEXT,
+"SD_Prev_Sale_Price" INTEGER,
+"SD_Prev_Sale_Date" TEXT,
+"SD_Ass_Imp2020" INTEGER,
+"SD_Ass_Land2020" INTEGER,
+"SD_Ass_Tot2020" INTEGER,
+"SD_App_Imp2020" INTEGER,
+"SD_App_Land2020" INTEGER,
+"SD_App_Tot2020" INTEGER,
+"SD_Empty1" TEXT,
+"SD_Empty2" TEXT
+);
+
+
 CREATE TABLE "TownAssessment"
 (
 "TA_Owner Name" TEXT,
-"TA_Map" TEXT,
-"TA_Lot" TEXT,
+"TA_Map" INTEGER,
+"TA_Lot" INTEGER,
 "TA_Unit" TEXT,
 "TA_Location" TEXT,
 "TA_Land_Value" INTEGER,
@@ -51,8 +85,8 @@ CREATE TABLE "RecentSales"
 "RS_Owner" TEXT, 
 "RS_Address" TEXT,
 "RS_MBLU" TEXT,
-"RS_Map" TEXT,
-"RS_Lot" TEXT,
+"RS_Map" INTEGER,
+"RS_Lot" INTEGER,
 "RS_Unit" TEXT,
 "RS_Book-Page" TEXT,
 "RS_RecentSalePrice" INTEGER,
@@ -82,9 +116,9 @@ CREATE TABLE "ZoningPermits"
 "ZP_DateApplication" TEXT,
 "ZP_DateIssued" TEXT,
 "ZP_Bogus1" TEXT,
-"ZP_Map" TEXT,
+"ZP_Map" INTEGER,
 "ZP_Lot_Unit" TEXT,
-"ZP_Lot" TEXT,
+"ZP_Lot" INTEGER,
 "ZP_Unit" TEXT,
 "ZP_Address" TEXT,
 "ZP_Applicant" TEXT,
@@ -99,8 +133,8 @@ CREATE TABLE "OldVsNew"
 "ON_Page" TEXT,
 "ON_Row" TEXT,
 "ON_AcctNumber" TEXT,
-"ON_Map" TEXT,
-"ON_Lot" TEXT,
+"ON_Map" INTEGER,
+"ON_Lot" INTEGER,
 "ON_Unit" TEXT,
 "ON_Location" TEXT,
 "ON_Owner" TEXT,
@@ -126,8 +160,8 @@ CREATE TABLE "LymeUseCodes"
 CREATE TABLE "LymeOldToNew211202"
 (
 "LO_AcctNumber" TEXT,
-"LO_Map" TEXT,
-"LO_Lot" TEXT,
+"LO_Map" INTEGER,
+"LO_Lot" INTEGER,
 "LO_Unit" TEXT,
 "LO_Empty1" TEXT,
 "LO_Location" TEXT,
@@ -141,8 +175,8 @@ CREATE TABLE "LymeOldToNew211202"
 
 CREATE TABLE "AsVsApDina"
 (
-"AA_Map" TEXT,
-"AA_Lot" TEXT,
+"AA_Map" INTEGER,
+"AA_Lot" INTEGER,
 "AA_Unit" TEXT,
 "AA_Empty1" TEXT,
 "AA_Location" TEXT,
@@ -164,9 +198,9 @@ CREATE TABLE "AsVsApDina"
 
 CREATE TABLE "ConservationEasements"
 (
-"CE_Map" TEXT,
+"CE_Map" INTEGER,
 "CE_Lot-Unit" TEXT,
-"CE_Lot" TEXT,
+"CE_Lot" INTEGER,
 "CE_Unit" TEXT,
 "CE_Owner" TEXT,
 "CE_OwnerAddress" TEXT,

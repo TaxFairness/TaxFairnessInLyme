@@ -2,6 +2,7 @@
 # This empties the databasetables, then imports the requisite files
 
 delete from ScrapedData;
+delete from ScrapedData2;
 delete from TownAssessment;
 delete from VisionOccCodes;
 delete from RecentSales;
@@ -22,6 +23,7 @@ delete from ConservationEasements;
 .import "Todd Data-3Dec2021/lyme old to new 21-1202-from-xls-cleaned.csv" LymeOldToNew211202
 .import "Todd Data-3Dec2021/ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv" AsVsAPDina
 .import "Conservation Easements/Lyme Conservation Easements as of 2-13-08.csv" ConservationEasements
+.import ScrapedData12Jan2022.csv ScrapedData2
 
 delete from VGSIinLyme;
 .mode tabs

@@ -283,7 +283,7 @@ on l.ON_Map = r.LO_Map and
 ;
 ```
 
-**Which recently-improved properties have increased their assessments?** 
+**Which recently-improved properties have increased their assessments?** _Display 2020 Assessment plus cost of improvements, compare that "Computed Assessment" to the 2021 Assessment, with a "delta" showing above/below_
 
 ```sql
 SELECT 
@@ -303,7 +303,49 @@ LEFT JOIN ScrapedData r
 on l.ZP_Map = r.SD_Map and
 	l.ZP_Lot = r.SD_Lot and
 	l.ZP_Unit = r.SD_Unit
-WHERE l.ZP_DateIssued > "2021-01-01"
+WHERE l.ZP_DateIssued > "2020-01-01"
 ORDER by ZP_DateIssued
+;
+```
+
+**Properties whose Improvements, Land, or Total Assessment changed:** _Use where clause to select for Street Address; add `order by cast (SD_Street_Address as decimal)` to sort in the "natural order"._
+
+```
+select
+	sd_map as "Map",
+	sd_lot as "Lot",
+	sd_unit as "Unit",
+	SD_Street_Address as "Street Address",
+	printf("$%,d", SD_App_Land2020) as "Land2020",
+	printf("$%,d", SD_App_Land2021) as "Land2021",
+	printf("%1.1f%", (sd_App_Land2021 *100.0/ sd_App_Land2020)-100) as "Land% incr",
+	printf("$%,d", SD_App_Imp2020) as "Impr2020",
+	printf("$%,d", SD_App_Imp2021) as "Impr2021",
+	printf("%1.1f%", (sd_App_Imp2021 *100.0/SD_App_Imp2020)-100) as "Impr% incr",
+	printf("$%,d", SD_App_Tot2020) as "Tot Appr. 2020",
+	printf("$%,d", SD_App_Tot2021) as "Tot Appr. 2021",
+	printf("%1.1f%", (sd_App_Tot2021 *100.0/ sd_App_Tot2020)-100) as "Total% incr",
+	printf("$%,d", SD_Ass_Tot2020) as "Ass. 2020",
+	printf("$%,d", SD_Assessment2021) as "Ass. 2021",
+	printf("$%,d",cast (SD_Ass_Tot2020*26.66/1000 as integer)) as "Tax2020",
+	printf("$%,d",cast (SD_Assessment2021*24.07/1000 as integer)) as "Tax2021",
+	printf("%1.1f%",(SD_Assessment2021*24.07-SD_Ass_Tot2020*26.66)*100/(SD_Ass_Tot2020*26.66)) as "Tax %"
+from ScrapedData2
+where SD_Street_Address like "%river%"
+order by (SD_Assessment2021*24.07-SD_Ass_Tot2020*26.66)*100/(SD_Ass_Tot2020*26.66) desc
+-- order by cast(SD_Street_Address as decimal)
+;
+```
+
+**Rows in Dina's spreadsheet not in the ScrapedData2** _WIP_
+
+```sql
+SELECT
+SD_Street_Address, AA_Location,AA_Owner
+from ScrapedData2
+join AsVsApDina
+on AA_Map = SD_Map AND
+   AA_Lot = SD_Lot AND
+   trim(AA_Unit) = trim(SD_Unit)
 ;
 ```
