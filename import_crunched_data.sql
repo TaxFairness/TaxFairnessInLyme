@@ -3,6 +3,7 @@
 
 delete from ScrapedData;
 delete from ScrapedData2;
+delete from ScrapedData3;
 delete from TownAssessment;
 delete from VisionOccCodes;
 delete from RecentSales;
@@ -14,7 +15,7 @@ delete from ConservationEasements;
 
 .mode csv
 .import ScrapedData-21Nov2021.csv ScrapedData
-.import Town-Assessment-from-PDF-21Oct2021.csv TownAssessment
+.import Town-Assessment-from-PDF-16Feb2022.csv TownAssessment
 .import Vision-Occupancy-Codes.csv VisionOccCodes
 .import "Recent Sales Data from Rusty-31Oct2021.csv" RecentSales
 .import "Lyme Zoning Permit 2016-2021.csv" ZoningPermits
@@ -24,6 +25,7 @@ delete from ConservationEasements;
 .import "Todd Data-3Dec2021/ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv" AsVsAPDina
 .import "Conservation Easements/Lyme Conservation Easements as of 2-13-08.csv" ConservationEasements
 .import ScrapedData12Jan2022.csv ScrapedData2
+.import ScrapedData24Feb2022.csv ScrapedData3
 
 delete from VGSIinLyme;
 .mode tabs

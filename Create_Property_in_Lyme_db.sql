@@ -64,6 +64,41 @@ CREATE TABLE "ScrapedData2" (
 "SD_Empty2" TEXT
 );
 
+CREATE TABLE "ScrapedData3" (
+"SD_PID" TEXT,
+"SD_Owner" TEXT,
+"SD_Street_Address" TEXT,
+"SD_MBLU" TEXT,
+"SD_Map" INTEGER,
+"SD_Lot" INTEGER,
+"SD_Unit" TEXT,
+"SD_Book_Page" TEXT,
+"SD_Assessment2021" INTEGER,
+"SD_Appraisal2021" INTEGER,
+"SD_Lot_Size" INTEGER,
+"SD_Land_Use_Code" TEXT,
+"SD_Description" TEXT,
+"SD_Zoning_District" TEXT,
+"SD_Num_Buildings" INTEGER,
+"SD_Recent_Sale_Price" INTEGER,
+"SD_Recent_Sale_Date" TEXT,
+"SD_Prev_Sale_Price" INTEGER,
+"SD_Prev_Sale_Date" TEXT,
+"SD_Ass_Imp2021" INTEGER,
+"SD_Ass_Land2021" INTEGER,
+"SD_Ass_Tot2021" INTEGER,
+"SD_Ass_Imp2020" INTEGER,
+"SD_Ass_Land2020" INTEGER,
+"SD_Ass_Tot2020" INTEGER,
+"SD_App_Imp2021" INTEGER,
+"SD_App_Land2021" INTEGER,
+"SD_App_Tot2021" INTEGER,
+"SD_App_Imp2020" INTEGER,
+"SD_App_Land2020" INTEGER,
+"SD_App_Tot2020" INTEGER,
+"SD_Empty1" TEXT,
+"SD_Empty2" TEXT
+);
 
 CREATE TABLE "TownAssessment"
 (
@@ -74,8 +109,7 @@ CREATE TABLE "TownAssessment"
 "TA_Location" TEXT,
 "TA_Land_Value" INTEGER,
 "TA_Improvements" INTEGER,
-"TA_Parcel_Value" INTEGER,
-"TA_Empty" TEXT
+"TA_Parcel_Value" INTEGER
 );
 
 CREATE TABLE "RecentSales" 

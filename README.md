@@ -2,10 +2,12 @@
 
 This repo contains information about properties in Lyme retrieved from various sources:
 
-- **Town Assessment-from PDF-12Oct2021.txt** This contains the Assessed value by owner - original source data comes from town website at: https://www.lymenh.gov/sites/g/files/vyhlif4636/f/uploads/assessed_value_by_owner_21-0909_0.pdf
+- **Town Assessment-from PDF-12Oct2021.txt** This contains the Assessed value by owner - original source data comes from town website at: https://www.lymenh.gov/sites/g/files/vyhlif4636/f/uploads/assessed\_value\_by\_owner_21-0909_0.pdf
 It was massaged by PDF OCR X Enterprise Edition and a bunch of regexes to produce the Town Assessment-from PDF-12Oct2021.xlsx spreadsheet. Table (in the database) is named **TownAssessment**
 
 - **Scraped-Data-19Oct2021.txt** Scraped Data, retrieved by the ScrapingVGSI script querying the Vision database. The current data is 19Oct2021.xlsx Table is named **ScrapedData**
+
+- **ScrapedData12Jan2022.csv** A more recent scrape of the VGSI site, retrieving current (post-revaluation) data and new columns, such as _current_ land/improv/total and _previous_ land/improv/total assessments and appraisals.
 
 - **Recent\_Sales\_Data\_from_Rusty-31Oct2021.csv** Values for recent sales (from April 2020 to date) collected from the Grafton County Register of Deeds. (Thanks, Rusty.) Table is named **Recentsales**
 
