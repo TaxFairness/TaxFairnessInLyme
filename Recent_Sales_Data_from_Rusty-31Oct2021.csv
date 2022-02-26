@@ -1,5 +1,5 @@
 ﻿PID,Prev Owner,Owner,Street Address,MBLU,Map,Lot,Unit,Book&Page,Recent Sale Price,Recent sale Date,Transfer Tax,Back-calc
-# Summary of sales 1Apr2020 through mid-September 2021 - distilled from RK Data,,,,,,,,,,,,
+# Summary of sales 1Apr2020 through mid-September 2021 - distilled from RK Data 31Oct2021,,,,,,,,,,,,
 243,,TRUSTEES OF DARTMOUTH COLLEGE,54 GOOSE POND RD,401/  40/  /  / ,401,40,,  4586/ 837,1845000,12/21/20,27675, x 
 1489,,"ROBY TRUSTEE, DAVID M",700 DORCHESTER RD,421/  21/  /  / ,421,21,,  4616/ 421,2500000,3/21/21,37500, x 
 194,,"KINGLAND FARMS, LLC",8 GOODELL LN,401/  9/  /  / ,401,9,,  4519/ 352,69000,5/14/20,1035,
@@ -66,7 +66,7 @@ April 2021 to date,,,,,,,,,,,,
 ,Lundberg,Gahagan,301 Orford Road,,406,3,,,307000,4/1/21,4605,
 ,Menard,Mendyka,53 Dorchester Road,,408,31,,,345000,4/1/21,5175,
 ,Barnum,Holmes,155 River Rd,,402,100,,,2500000,4/1/21,37500,
-,Keith,Rice,6 On the Common,,201,35,0020,,215950,4/1/21,3239,
+,Keith,Rice,6 On the Common,,201,35,20,,215950,4/1/21,3239,
 ,Bent,Price,95 Whipple Hill,,407,73,,,1230000,4/1/21,18450,
 ,Estes,Swartz,11 Orford Rd,,408,3,,,412000,4/1/21,6180,
 ,Gerngross,Barraclough,136 River Road,,402,80,,,675000,4/1/21,10125,
@@ -79,4 +79,3 @@ April 2021 to date,,,,,,,,,,,,
 ,Piper (estate),Cloud,97 Preston Road,,402,27,,,131500,4/1/21,1973,
 ,Barker,Doyle,35 Pinnacle Hill Road,,407,95,,,700000,4/19/21,10500,
 ,Brightman,Salkin,129 Franklin Hill,,408,48,,,617000,4/15/21,9255,
-,,,,,,,,,,,,

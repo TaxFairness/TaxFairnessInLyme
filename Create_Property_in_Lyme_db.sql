@@ -257,6 +257,27 @@ CREATE TABLE "ConservationEasements"
 )
 ;
 
+# Table of 61 sales considered for 2021 Revaluation
+CREATE TABLE "61_Sales"
+(
+	"61_PID" TEXT,
+	"61_Neigh" TEXT,
+	"61_Map" INTEGER,
+	"61_Lot" INTEGER,
+	"61_Unit" TEXT,
+	"61_Location" TEXT,
+	"61_UseCode" TEXT,
+	"61_EffArea" INTEGER,
+	"61_Age" TEXT,
+	"61_EffAge" TEXT,
+	"61_SaleDate" TEXT,
+	"61_SalePrice" INTEGER,
+	"61_ApprVal" INTEGER,
+	"61_RatioAtoS" INTEGER,
+	"61_RatioStoA" INTEGER,
+	"61_AbsDisp" INTEGER
+);
+
 # Current Appraisal values (from Todd's latest spreadsheet via Dina) plus scraped values
 CREATE VIEW "Assess_Apprais_Sales" as 
 select 
