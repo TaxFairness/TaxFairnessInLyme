@@ -12,7 +12,8 @@ delete from OldVsNew;
 delete from LymeUseCodes;
 delete from LymeOldToNew211202;
 delete from ConservationEasements;
-delete from "61_Sales";
+delete from SalesConsidered61;
+delete from SalesNotUsed;
 
 .mode csv
 .import ScrapedData-21Nov2021.csv ScrapedData
@@ -27,7 +28,8 @@ delete from "61_Sales";
 .import "Conservation Easements/Lyme Conservation Easements as of 2-13-08.csv" ConservationEasements
 .import ScrapedData12Jan2022.csv ScrapedData2
 .import ScrapedData24Feb2022.csv ScrapedData3
-.import "all sales 19-0401-21-0930 16-tab.csv" "61_Sales"
+.import "DefinitiveData/all sales 19-0401-21-0930 16-tab.csv" SalesConsidered61
+.import "DefinitiveData/Sales Not Used-12Jan2022.csv" SalesNotUsed
 
 delete from VGSIinLyme;
 .mode tabs

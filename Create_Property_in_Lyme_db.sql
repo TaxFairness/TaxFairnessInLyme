@@ -258,7 +258,7 @@ CREATE TABLE "ConservationEasements"
 ;
 
 # Table of 61 sales considered for 2021 Revaluation
-CREATE TABLE "61_Sales"
+CREATE TABLE "SalesConsidered61"
 (
 	"61_PID" TEXT,
 	"61_Neigh" TEXT,
@@ -277,6 +277,24 @@ CREATE TABLE "61_Sales"
 	"61_RatioStoA" INTEGER,
 	"61_AbsDisp" INTEGER
 );
+
+# Create table of "Sales Not Used"
+# From H. Quinton's photos taken of the Assessor's Manual at Town Offices, 12 Jan 2022
+
+CREATE TABLE "SalesNotUsed"
+(
+	"NU_Map" INTEGER,
+	"NU_Lot" INTEGER,
+	"NU_Unit" TEXT,
+	"NU_SalesPrice" INTEGER,
+	"NU_SaleDate" TEXT,
+	"NU_Area" INTEGER,
+	"NU_AssessedValue" INTEGER,
+	"NU_Style" TEXT,
+	"NU_Page" INTEGER,
+	"NU_Line" INTEGER
+)
+;
 
 # Current Appraisal values (from Todd's latest spreadsheet via Dina) plus scraped values
 CREATE VIEW "Assess_Apprais_Sales" as 
