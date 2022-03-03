@@ -16,21 +16,21 @@ delete from SalesConsidered61;
 delete from SalesNotUsed;
 
 .mode csv
-.import ScrapedData-21Nov2021.csv ScrapedData
-.import Town-Assessment-from-PDF-16Feb2022.csv TownAssessment
-.import Vision-Occupancy-Codes.csv VisionOccCodes
-.import "Recent Sales Data from Rusty-31Oct2021.csv" RecentSales
-.import "Lyme Zoning Permit 2016-2021.csv" ZoningPermits
-.import "Old-New Values/Old-NewValues2021-21Nov2021.csv" OldVsNew
-.import "002_Lyme Land Use Codes-17Nov2021.csv" LymeUseCodes
-.import "Todd Data-3Dec2021/lyme old to new 21-1202-from-xls-cleaned.csv" LymeOldToNew211202
-.import "Todd Data-3Dec2021/ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv" AsVsAPDina
-.import "Conservation Easements/Lyme Conservation Easements as of 2-13-08.csv" ConservationEasements
-.import ScrapedData12Jan2022.csv ScrapedData2
-.import ScrapedData24Feb2022.csv ScrapedData3
+.import "DefinitiveData/ScrapedData-21Nov2021.csv" ScrapedData
+.import "DefinitiveData/Town-Assessment-from-PDF-16Feb2022.csv" TownAssessment
+.import "DefinitiveData/Vision-Occupancy-Codes.csv" VisionOccCodes
+.import "DefinitiveData/Recent Sales Data from Rusty-31Oct2021.csv" RecentSales
+.import "DefinitiveData/Lyme Zoning Permit 2016-2021.csv" ZoningPermits
+.import "DefinitiveData/Old-NewValues2021-21Nov2021.csv" OldVsNew
+.import "DefinitiveData/002_Lyme Land Use Codes-17Nov2021.csv" LymeUseCodes
+.import "DefinitiveData/lyme old to new 21-1202-from-xls-cleaned.csv" LymeOldToNew211202
+.import "DefinitiveData/ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv" AsVsAPDina
+.import "DefinitiveData/Lyme Conservation Easements as of 2-13-08.csv" ConservationEasements
+.import "DefinitiveData/ScrapedData12Jan2022.csv" ScrapedData2
+.import "DefinitiveData/ScrapedData24Feb2022.csv" ScrapedData3
 .import "DefinitiveData/all sales 19-0401-21-0930 16-tab.csv" SalesConsidered61
 .import "DefinitiveData/Sales Not Used-12Jan2022.csv" SalesNotUsed
 
 delete from VGSIinLyme;
 .mode tabs
-.import Land_Use_Codes_from_VGSI.txt VGSIinLyme
+.import "DefinitiveData/Land_Use_Codes_from_VGSI.txt" VGSIinLyme
