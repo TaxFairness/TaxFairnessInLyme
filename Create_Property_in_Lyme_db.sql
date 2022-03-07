@@ -207,7 +207,9 @@ CREATE TABLE "LymeOldToNew211202"
 "LO_Difference" INTEGER
 );
 
-CREATE TABLE "AsVsApDina"
+# This table has multiple rows per property
+# Use the UniqueAssessVsApprais view for actual work
+CREATE TABLE "RawAsVsApDina"
 (
 "AA_Map" INTEGER,
 "AA_Lot" INTEGER,
@@ -260,22 +262,22 @@ CREATE TABLE "ConservationEasements"
 # Table of 61 sales considered for 2021 Revaluation
 CREATE TABLE "SalesConsidered61"
 (
-	"61_PID" TEXT,
-	"61_Neigh" TEXT,
-	"61_Map" INTEGER,
-	"61_Lot" INTEGER,
-	"61_Unit" TEXT,
-	"61_Location" TEXT,
-	"61_UseCode" TEXT,
-	"61_EffArea" INTEGER,
-	"61_Age" TEXT,
-	"61_EffAge" TEXT,
-	"61_SaleDate" TEXT,
-	"61_SalePrice" INTEGER,
-	"61_ApprVal" INTEGER,
-	"61_RatioAtoS" INTEGER,
-	"61_RatioStoA" INTEGER,
-	"61_AbsDisp" INTEGER
+	"SC_PID" TEXT,
+	"SC_Neigh" TEXT,
+	"SC_Map" INTEGER,
+	"SC_Lot" INTEGER,
+	"SC_Unit" TEXT,
+	"SC_Location" TEXT,
+	"SC_UseCode" TEXT,
+	"SC_EffArea" INTEGER,
+	"SC_Age" TEXT,
+	"SC_EffAge" TEXT,
+	"SC_SaleDate" TEXT,
+	"SC_SalePrice" INTEGER,
+	"SC_ApprVal" INTEGER,
+	"SC_RatioAtoS" INTEGER,
+	"SC_RatioStoA" INTEGER,
+	"SC_AbsDisp" INTEGER
 );
 
 # Create table of "Sales Not Used"
@@ -338,11 +340,11 @@ ON
 CREATE VIEW "Sanity_ScrapedNotInOldNew" as 
 select ON_Map, ON_Lot, ON_Unit from OldVsNew
 EXCEPT 
-select SD_Map, SD_Lot, SD_Unit from ScrapedData
+select SD_Map, SD_Lot, SD_Unit from ScrapedData3
 ;
 
 CREATE VIEW "Sanity_OldNewNotInScraped" as 
-select SD_Map, SD_Lot, SD_Unit from ScrapedData
+select SD_Map, SD_Lot, SD_Unit from ScrapedData3
 EXCEPT 
 select ON_Map, ON_Lot, ON_Unit from OldVsNew
 ;
@@ -360,4 +362,4 @@ select distinct
 	"AA_Assessment_Land" ,
 	"AA_Appraisal_Total" ,
 	"AA_Assessment_Total" 
-from AsVsAPDina;
+from RawAsVsAPDina;

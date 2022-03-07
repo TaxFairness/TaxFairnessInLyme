@@ -24,10 +24,10 @@ delete from SalesNotUsed;
 .import "DefinitiveData/Old-NewValues2021-21Nov2021.csv" OldVsNew
 .import "DefinitiveData/002_Lyme Land Use Codes-17Nov2021.csv" LymeUseCodes
 .import "DefinitiveData/lyme old to new 21-1202-from-xls-cleaned.csv" LymeOldToNew211202
-.import "DefinitiveData/ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv" AsVsAPDina
+.import "DefinitiveData/ASSESSED V. APPRAISED DINA W TTL LAND UNITS 21-1202-no-units.csv" RawAsVsAPDina
 .import "DefinitiveData/Lyme Conservation Easements as of 2-13-08.csv" ConservationEasements
 .import "DefinitiveData/ScrapedData12Jan2022.csv" ScrapedData2
-.import "DefinitiveData/ScrapedData24Feb2022.csv" ScrapedData3
+.import "DefinitiveData/ScrapedData6Mar2022.csv" ScrapedData3
 .import "DefinitiveData/all sales 19-0401-21-0930 16-tab.csv" SalesConsidered61
 .import "DefinitiveData/Sales Not Used-12Jan2022.csv" SalesNotUsed
 

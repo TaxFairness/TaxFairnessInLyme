@@ -68,10 +68,11 @@ data and new columns, such as _current_ land/improv/total and _previous_
 land/improv/total assessments and appraisals.
 Table is named **ScrapedData2**
 
-   - **ScrapedData24Feb2022.csv**
+   - **ScrapedData6Mar2022.csv**
 Re-scrape of the VGSI site on 24 Feb 2022, retrieving additional columns such as
 owner name and current/prior values for both appraised & assessed
 Land/Improvements/Total values (a total of 2 x 2 x 3 columns).
+Updated 6Mar2022 to ensure that all empty Unit values are "".
 Table is named **ScrapedData3**
 
    - **Town-Assessment-from-PDF-16Feb2022.csv**
@@ -230,6 +231,28 @@ where SD_Street_Address like "%orford %"
 order by cast(SD_Street_Address as decimal) -- Street Address
 -- order by ((sd_App_Tot2021 *100.0/ sd_App_Tot2020)-100) -- Total Appraisal increase
 -- order by ((sd_App_Land2021 *100.0/ sd_App_Land2020)-100) -- Increased Land Value
+;
+```
+
+**Properties that seem under-appraised**
+_Select all (61) recent sale values and compare to the 2021 total appraised value_
+
+```
+SELECT
+	r.SD_PID,
+	l.SC_Map, l.SC_Lot, L.SC_Unit,
+	l.SC_Location,
+	l.SC_SalePrice,
+	r.SD_App_Tot2021,
+	printf("%,d",(r.SD_App_Tot2021 - l.SC_SalePrice)) as "Underappraisal",
+	printf("%1.1f%",(r.SD_App_Tot2021 - l.SC_SalePrice)*100/r.SD_App_Tot2021) as "Percent"
+from SalesConsidered61 l
+left JOIN ScrapedData3 r
+
+on SC_Map = SD_Map AND SC_Lot = SD_Lot AND SC_Unit = SD_Unit
+
+--where r.SD_App_Tot2021 <> NULL
+order by r.SD_App_Tot2021 DESC
 ;
 ```
 
