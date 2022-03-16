@@ -8,3 +8,16 @@
 to see which map/lot/units don't match.
 Reviewed the original PDF and the VGSI database to correct errors.
 Re-ran the scrapevgsi.py script to get new data to import into SQLite.
+
+- **16Mar2022:** Sorted most files into folders to reduce clutter.
+They are:
+  - **Communications:** drafts, letters, notes we've sent out
+  - **Conservation & Current Use Land:**
+  collection of files used to create 
+  the Conservation Easement table
+  - **DefinitiveData:** the collection of massaged data.
+	These files get imported to create the database
+  - **Interesting Summaries, Views, and Reports:**
+  A collection of files that were once useful, produced from Excel or SQL commands.
+  - **Raw Data:** the full collection of raw data files,
+  spreadsheets, PDFs etc. used to create the DefinitiveData
